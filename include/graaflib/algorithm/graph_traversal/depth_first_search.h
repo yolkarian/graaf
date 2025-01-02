@@ -4,7 +4,7 @@
 #include <graaflib/graph.h>
 #include <graaflib/types.h>
 
-#include <concepts>
+#include <type_traits>
 
 namespace graaf::algorithm {
 
@@ -23,10 +23,9 @@ namespace graaf::algorithm {
 template <
     typename V, typename E, graph_type T,
     typename EDGE_CALLBACK_T = detail::noop_callback,
-    typename SEARCH_TERMINATION_STRATEGY_T = detail::exhaustive_search_strategy>
-  requires std::invocable<EDGE_CALLBACK_T &, edge_id_t &> &&
-           std::is_invocable_r_v<bool, SEARCH_TERMINATION_STRATEGY_T &,
-                                 vertex_id_t>
+    typename SEARCH_TERMINATION_STRATEGY_T = detail::exhaustive_search_strategy,
+    typename = std::enable_if_t<std::is_invocable_v<EDGE_CALLBACK_T &, edge_id_t &> &&
+           std::is_invocable_r_v<bool, SEARCH_TERMINATION_STRATEGY_T &,vertex_id_t>>>
 void depth_first_traverse(
     const graph<V, E, T> &graph, vertex_id_t start_vertex,
     const EDGE_CALLBACK_T &edge_callback,

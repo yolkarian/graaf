@@ -14,11 +14,11 @@ using edge_set_t = std::unordered_set<edge_id_t, edge_id_hash>;
 [[nodiscard]] bool compare_mst(const std::vector<edge_id_t>& actual_mst,
                                edge_set_t expected_edges) {
   for (const auto& edge : actual_mst) {
-    if (expected_edges.contains(edge)) {
+    if (expected_edges.find(edge)!=expected_edges.end()) {
       expected_edges.erase(edge);
       continue;
     } else if (const edge_id_t inverse_edge{edge.second, edge.first};
-               expected_edges.contains(inverse_edge)) {
+               expected_edges.find(inverse_edge)!=expected_edges.end()) {
       // Since the graph is undirected, we also check the inverse of the edge
       expected_edges.erase(inverse_edge);
       continue;

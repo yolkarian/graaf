@@ -19,7 +19,7 @@ void do_dfs_topological_sort(
     std::vector<vertex_id_t>& sorted_vertices) {
   processed_vertices.insert(start_vertex);
   for (const auto& next_vertex : graph.get_neighbors(start_vertex)) {
-    if (!processed_vertices.contains(next_vertex)) {
+    if (processed_vertices.find(next_vertex)==processed_vertices.end()) {
       do_dfs_topological_sort(graph, next_vertex, processed_vertices,
                               sorted_vertices);
     }
@@ -43,7 +43,7 @@ std::optional<std::vector<vertex_id_t>> dfs_topological_sort(
   std::unordered_set<vertex_id_t> processed_vertices{};
 
   for (const auto& [vertex_id, _] : graph.get_vertices()) {
-    if (!processed_vertices.contains(vertex_id)) {
+    if (processed_vertices.find(vertex_id)==processed_vertices.end()) {
       detail::do_dfs_topological_sort(graph, vertex_id, processed_vertices,
                                       sorted_vertices);
     }

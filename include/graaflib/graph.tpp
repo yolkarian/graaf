@@ -31,18 +31,17 @@ std::size_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::edge_count() const noexcept {
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
 bool graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::has_vertex(
     vertex_id_t vertex_id) const noexcept {
-  return vertices_.contains(vertex_id);
+  return vertices_.find(vertex_id)!=vertices_.end();
 }
 
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
 bool graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::has_edge(
     vertex_id_t vertex_id_lhs, vertex_id_t vertex_id_rhs) const noexcept {
-  using enum graph_type;
-  if constexpr (GRAPH_TYPE_V == DIRECTED) {
-    return edges_.contains({vertex_id_lhs, vertex_id_rhs});
-  } else if constexpr (GRAPH_TYPE_V == UNDIRECTED) {
-    return edges_.contains(
-        detail::make_sorted_pair(vertex_id_lhs, vertex_id_rhs));
+  if constexpr (GRAPH_TYPE_V == graph_type::DIRECTED) {
+    return edges_.find({vertex_id_lhs, vertex_id_rhs})!=edges_.end();
+  } else if constexpr (GRAPH_TYPE_V == graph_type::UNDIRECTED) {
+    return edges_.find(
+        detail::make_sorted_pair(vertex_id_lhs, vertex_id_rhs))!=edges_.end();
   }
 
   // Should never reach this
@@ -91,10 +90,9 @@ graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::get_edge(
                                 std::to_string(vertex_id_rhs) + "]."};
   }
 
-  using enum graph_type;
-  if constexpr (GRAPH_TYPE_V == DIRECTED) {
+  if constexpr (GRAPH_TYPE_V == graph_type::DIRECTED) {
     return edges_.at({vertex_id_lhs, vertex_id_rhs});
-  } else if constexpr (GRAPH_TYPE_V == UNDIRECTED) {
+  } else if constexpr (GRAPH_TYPE_V == graph_type::UNDIRECTED) {
     return edges_.at(detail::make_sorted_pair(vertex_id_lhs, vertex_id_rhs));
   }
 
@@ -121,7 +119,7 @@ template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
 typename graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::vertices_t
 graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::get_neighbors(
     vertex_id_t vertex_id) const {
-  if (!adjacency_list_.contains(vertex_id)) {
+  if (adjacency_list_.find(vertex_id)==adjacency_list_.end()) {
     return {};
   }
   return adjacency_list_.at(vertex_id);
@@ -152,7 +150,7 @@ vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(auto&& vertex,
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
 void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::remove_vertex(
     vertex_id_t vertex_id) {
-  if (adjacency_list_.contains(vertex_id)) {
+  if (adjacency_list_.find(vertex_id)!=adjacency_list_.end()) {
     for (auto& target_vertex_id : adjacency_list_.at(vertex_id)) {
       edges_.erase({vertex_id, target_vertex_id});
     }
@@ -178,13 +176,12 @@ void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_edge(vertex_id_t vertex_id_lhs,
         std::to_string(vertex_id_rhs) + "] not found in graph."};
   }
 
-  using enum graph_type;
-  if constexpr (GRAPH_TYPE_V == DIRECTED) {
+  if constexpr (GRAPH_TYPE_V == graph_type::DIRECTED) {
     adjacency_list_[vertex_id_lhs].insert(vertex_id_rhs);
     edges_.emplace(std::make_pair(vertex_id_lhs, vertex_id_rhs),
                    std::forward<decltype(edge)>(edge));
     return;
-  } else if constexpr (GRAPH_TYPE_V == UNDIRECTED) {
+  } else if constexpr (GRAPH_TYPE_V == graph_type::UNDIRECTED) {
     adjacency_list_[vertex_id_lhs].insert(vertex_id_rhs);
     adjacency_list_[vertex_id_rhs].insert(vertex_id_lhs);
     edges_.emplace(detail::make_sorted_pair(vertex_id_lhs, vertex_id_rhs),
@@ -199,12 +196,11 @@ void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_edge(vertex_id_t vertex_id_lhs,
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
 void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::remove_edge(
     vertex_id_t vertex_id_lhs, vertex_id_t vertex_id_rhs) {
-  using enum graph_type;
-  if constexpr (GRAPH_TYPE_V == DIRECTED) {
+  if constexpr (GRAPH_TYPE_V == graph_type::DIRECTED) {
     adjacency_list_.at(vertex_id_lhs).erase(vertex_id_rhs);
     edges_.erase(std::make_pair(vertex_id_lhs, vertex_id_rhs));
     return;
-  } else if constexpr (GRAPH_TYPE_V == UNDIRECTED) {
+  } else if constexpr (GRAPH_TYPE_V == graph_type::UNDIRECTED) {
     adjacency_list_.at(vertex_id_lhs).erase(vertex_id_rhs);
     adjacency_list_.at(vertex_id_rhs).erase(vertex_id_lhs);
     edges_.erase(detail::make_sorted_pair(vertex_id_lhs, vertex_id_rhs));

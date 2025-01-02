@@ -5,8 +5,7 @@
 namespace graaf::algorithm {
 
 template <typename V, typename E, graph_type T, typename HEURISTIC_T,
-          typename WEIGHT_T>
-  requires std::is_invocable_r_v<WEIGHT_T, HEURISTIC_T&, vertex_id_t>
+          typename WEIGHT_T, typename>
 std::optional<graph_path<WEIGHT_T>> a_star_search(
     const graph<V, E, T>& graph, vertex_id_t start_vertex,
     vertex_id_t target_vertex, const HEURISTIC_T& heuristic) {
@@ -71,7 +70,7 @@ std::optional<graph_path<WEIGHT_T>> a_star_search(
       // Checks if vertex_info doesn't contain neighbor yet.
       // But if it contains it, and the tentative_g_score is smaller,
       // we need to update vertex_info and add it to the open set.
-      if (!vertex_info.contains(neighbor) ||
+      if ((vertex_info.find(neighbor) == vertex_info.end()) ||
           tentative_g_score < g_score[neighbor]) {
         // This path to neighbor is better than any previous one, so we need
         // to update our data. Update neighbor's g_score, f_score and previous

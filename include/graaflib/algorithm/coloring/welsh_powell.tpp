@@ -34,7 +34,7 @@ std::unordered_map<vertex_id_t, int> welsh_powell_coloring(const GRAPH& graph) {
         // Check colors of adjacent vertices
         for (const auto& neighbor : graph.get_neighbors(current_vertex)) {
             // If neighbor is already colored with this color, increment the color
-            if (color_map.contains(neighbor) && color_map[neighbor] == color) {
+            if ((color_map.find(neighbor)!=color_map.end()) && color_map[neighbor] == color) {
                     color++;
             }
         }

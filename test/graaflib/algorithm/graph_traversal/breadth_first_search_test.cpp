@@ -213,7 +213,7 @@ TYPED_TEST(TypedGraphTraversalTestBFS, MoreComplexGraphBFSLaterTermination) {
   const seen_edges_t expected_edges{{vertex_ids[0], vertex_ids[2]},
                                     {vertex_ids[2], vertex_ids[3]}};
   for (const auto& expected_edge : expected_edges) {
-    ASSERT_TRUE(seen_edges.contains(expected_edge));
+    ASSERT_TRUE(seen_edges.find(expected_edge)!=seen_edges.end());
   }
 }
 

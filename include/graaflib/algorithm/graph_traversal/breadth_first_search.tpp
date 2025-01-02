@@ -7,10 +7,7 @@
 namespace graaf::algorithm {
 
 template <typename V, typename E, graph_type T, typename EDGE_CALLBACK_T,
-          typename SEARCH_TERMINATION_STRATEGY_T>
-  requires std::invocable<EDGE_CALLBACK_T&, edge_id_t&> &&
-           std::is_invocable_r_v<bool, SEARCH_TERMINATION_STRATEGY_T&,
-                                 vertex_id_t>
+          typename SEARCH_TERMINATION_STRATEGY_T, typename>
 void breadth_first_traverse(
     const graph<V, E, T>& graph, vertex_id_t start_vertex,
     const EDGE_CALLBACK_T& edge_callback,
@@ -30,7 +27,7 @@ void breadth_first_traverse(
 
     seen_vertices.insert(current);
     for (const auto neighbor_vertex : graph.get_neighbors(current)) {
-      if (!seen_vertices.contains(neighbor_vertex)) {
+      if (seen_vertices.find(neighbor_vertex)==seen_vertices.end()) {
         edge_callback(edge_id_t{current, neighbor_vertex});
         to_explore.push(neighbor_vertex);
       }

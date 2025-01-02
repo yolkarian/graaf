@@ -42,7 +42,7 @@ tarjans_strongly_connected_components(
 
     // Traverse neighbors
     for (const auto neighbor : graph.get_neighbors(vertex)) {
-      if (!indices.contains(neighbor)) {
+      if (indices.find(neighbor)==indices.end()) {
         // Neighbor has not yet been visited; recurse on it
         strong_connect(neighbor);
         low_links[vertex] = std::min(low_links[vertex], low_links[neighbor]);
@@ -71,7 +71,7 @@ tarjans_strongly_connected_components(
 
   // Traverse all vertices to find SCCs
   for (const auto& [vertex_id, vertex] : graph.get_vertices()) {
-    if (!indices.contains(vertex_id)) {
+    if (indices.find(vertex_id)==indices.end()) {
       strong_connect(vertex_id);
     }
   }

@@ -3,6 +3,7 @@
 #include <graaflib/algorithm/shortest_path/common.h>
 #include <graaflib/graph.h>
 #include <graaflib/types.h>
+#include <limits>
 
 namespace graaf::algorithm {
 

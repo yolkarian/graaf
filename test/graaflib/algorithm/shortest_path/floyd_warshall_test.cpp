@@ -1,6 +1,7 @@
 #include <graaflib/algorithm/shortest_path/floyd_warshall.h>
 #include <gtest/gtest.h>
 #include <utils/fixtures/fixtures.h>
+#include <climits>
 
 namespace graaf::algorithm {
 

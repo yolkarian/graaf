@@ -7,7 +7,7 @@ project(Graaf
 )
 
 # This project uses C++ 20 features
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Example usages of the library

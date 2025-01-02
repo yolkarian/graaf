@@ -56,7 +56,7 @@ const auto vertex_writer{
 
 const auto edge_writer{
 [&edges_on_shortest_path](const graaf::vertex_ids_t& edge_id, int edge) -> std::string {
-  if (edges_on_shortest_path.contains(edge_id)) {
+  if (edges_on_shortest_path.find(edge_id)!=edges_on_shortest_path.end()) {
     return "label=\"\", color=red";
   }
   return "label=\"\", color=gray, style=dashed";
