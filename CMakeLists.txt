@@ -6,7 +6,7 @@ project(Graaf
   LANGUAGES C CXX
 )
 
-# This project uses C++ 20 features
+# This project uses C++ 17 features
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

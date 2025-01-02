@@ -126,7 +126,8 @@ graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::get_neighbors(
 }
 
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
-vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(auto&& vertex) {
+template <typename VERTEX_TYPE>
+vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(VERTEX_TYPE&& vertex) {
   while (has_vertex(vertex_id_supplier_)) {
     ++vertex_id_supplier_;
   }
@@ -136,7 +137,8 @@ vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(auto&& vertex) {
 }
 
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
-vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(auto&& vertex,
+template <typename VERTEX_TYPE>
+vertex_id_t graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_vertex(VERTEX_TYPE&& vertex,
                                                               vertex_id_t id) {
   if (has_vertex(id)) {
     throw std::invalid_argument{"Vertex already exists at ID [" +
@@ -166,9 +168,10 @@ void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::remove_vertex(
 }
 
 template <typename VERTEX_T, typename EDGE_T, graph_type GRAPH_TYPE_V>
+template <typename EDGE_TYPE>
 void graph<VERTEX_T, EDGE_T, GRAPH_TYPE_V>::add_edge(vertex_id_t vertex_id_lhs,
                                                      vertex_id_t vertex_id_rhs,
-                                                     auto&& edge) {
+                                                     EDGE_TYPE&& edge) {
   if (!has_vertex(vertex_id_lhs) || !has_vertex(vertex_id_rhs)) {
     // TODO(bluppes): replace with std::format once Clang supports it
     throw std::invalid_argument{
