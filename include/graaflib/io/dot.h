@@ -2,7 +2,6 @@
 
 #include <graaflib/graph.h>
 
-#include <concepts>
 #include <filesystem>
 #include <string>
 #include <type_traits>
@@ -11,11 +10,16 @@ namespace graaf::io {
 
 namespace detail {
 
-template <typename T>
-concept string_convertible = requires(T element) { std::to_string(element); };
+template <typename T, typename = void>
+struct is_string_convertible : std::false_type {};
 
 template <typename T>
-  requires string_convertible<T>
+struct is_string_convertible<T, std::void_t<decltype(std::to_string(std::declval<T>()))>> : std::true_type {};
+
+template <typename T>
+constexpr bool is_string_convertible_v = is_string_convertible<T>::value;
+
+template <typename T, typename = std::enable_if_t<is_string_convertible_v<T>, const std::string>>
 const auto default_vertex_writer{
     [](vertex_id_t vertex_id, const T& vertex) -> std::string {
       // TODO(bluppes): replace with std::format once Clang supports it
@@ -46,12 +50,12 @@ const auto default_edge_writer{
  */
 template <typename V, typename E, graph_type T,
           typename VERTEX_WRITER_T = decltype(detail::default_vertex_writer<V>),
-          typename EDGE_WRITER_T = decltype(detail::default_edge_writer)>
-  requires std::is_invocable_r_v<std::string, const VERTEX_WRITER_T&,
+          typename EDGE_WRITER_T = decltype(detail::default_edge_writer),
+          typename = std::enable_if_t<std::is_invocable_r_v<std::string, const VERTEX_WRITER_T&,
                                  vertex_id_t, const V&> &&
            std::is_invocable_r_v<std::string, const EDGE_WRITER_T&,
                                  const graaf::edge_id_t&,
-                                 const typename graph<V, E, T>::edge_t&>
+                                 const typename graph<V, E, T>::edge_t&>>>
 void to_dot(
     const graph<V, E, T>& graph, const std::filesystem::path& path,
     const VERTEX_WRITER_T& vertex_writer = detail::default_vertex_writer<V>,

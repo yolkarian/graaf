@@ -32,13 +32,14 @@ std::size_t vertex_indegree(const graaf::graph<V, E, T>& graph,
   using vertex_id_to_vertex_t = std::unordered_map<vertex_id_t, V>;
 
   if constexpr (T == graph_type::DIRECTED) {
-    return std::ranges::count_if(
-        graph.get_vertices(),
-        [&graph,
-         vertex_id](const typename vertex_id_to_vertex_t::value_type& kv_pair) {
-          const auto& [current_vertex_id, _]{kv_pair};
-          return graph.get_neighbors(current_vertex_id).contains(vertex_id);
-        });
+    return  std::count_if(
+    std::begin(graph.get_vertices()),
+    std::end(graph.get_vertices()),
+    [&graph, vertex_id](const typename vertex_id_to_vertex_t::value_type& kv_pair) {
+        const auto& current_vertex_id = kv_pair.first;
+        return graph.get_neighbors(current_vertex_id).find(vertex_id) != graph.get_neighbors(current_vertex_id).end();
+    }
+);
   }
 
   if constexpr (T == graph_type::UNDIRECTED) {

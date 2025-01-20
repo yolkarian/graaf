@@ -83,7 +83,7 @@ TEST(DotTest, EmptyUndirectedGraph) {
 
   // THEN
   const auto dot_content{read_to_string(path)};
-  ASSERT_TRUE(dot_content.starts_with("graph"));
+  ASSERT_TRUE(dot_content.rfind("graph",0)==0);
 }
 
 TEST(DotTest, EmptyDirectedGraph) {
@@ -97,7 +97,7 @@ TEST(DotTest, EmptyDirectedGraph) {
 
   // THEN
   const auto dot_content{read_to_string(path)};
-  ASSERT_TRUE(dot_content.starts_with("digraph"));
+  ASSERT_TRUE(dot_content.rfind("digraph", 0)==0);
 }
 
 TEST(DotTest, UndirectedGraph) {

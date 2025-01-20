@@ -177,7 +177,8 @@ class graph {
    * @param  vertex The vertex to be added
    * @return vertices_id_t - The ID of the new vertex
    */
-  [[nodiscard]] vertex_id_t add_vertex(auto&& vertex);
+   template <typename VERTEX_TYPE>
+  [[nodiscard]] vertex_id_t add_vertex(VERTEX_TYPE&& vertex);
 
   /**
    * Add a vertex to the graph with a specific ID
@@ -187,7 +188,8 @@ class graph {
    * @return vertices_id_t - The ID of the new vertex
    * @throws id_taken exception - If the relevant ID is already in use
    */
-  vertex_id_t add_vertex(auto&& vertex, vertex_id_t id);
+  template <typename VERTEX_TYPE>
+  vertex_id_t add_vertex(VERTEX_TYPE&& vertex, vertex_id_t id);
 
   /**
    * Remove a vertex from the graph and update all its neighbors
@@ -202,8 +204,9 @@ class graph {
    * @param  vertex_id The ID of the vertex
    * @throws out_of_range - If either of the vertices do not exist in graph
    */
+  template <typename EDGE_TYPE>
   void add_edge(vertex_id_t vertex_id_lhs, vertex_id_t vertex_id_rhs,
-                auto&& edge);
+                EDGE_TYPE&& edge);
 
   /**
    * Remove the edge between two vertices

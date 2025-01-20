@@ -25,7 +25,7 @@ dijkstra_shortest_paths(const graph<V, E, T>& graph,
     auto current{to_explore.top()};
     to_explore.pop();
 
-    if (shortest_paths.contains(current.id) &&
+    if ((shortest_paths.find(current.id)!=shortest_paths.end()) &&
         current.dist_from_start > shortest_paths[current.id].total_weight) {
       continue;
     }
@@ -43,7 +43,7 @@ dijkstra_shortest_paths(const graph<V, E, T>& graph,
 
       WEIGHT_T distance = current.dist_from_start + edge_weight;
 
-      if (!shortest_paths.contains(neighbor) ||
+      if ((shortest_paths.find(neighbor)==shortest_paths.end()) ||
           distance < shortest_paths[neighbor].total_weight) {
         shortest_paths[neighbor].total_weight = distance;
         shortest_paths[neighbor].vertices = shortest_paths[current.id].vertices;

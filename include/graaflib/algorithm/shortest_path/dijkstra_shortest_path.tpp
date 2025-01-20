@@ -40,7 +40,7 @@ std::optional<graph_path<WEIGHT_T>> dijkstra_shortest_path(
 
       WEIGHT_T distance = current.dist_from_start + edge_weight;
 
-      if (!vertex_info.contains(neighbor) ||
+      if ((vertex_info.find(neighbor)==vertex_info.end()) ||
           distance < vertex_info[neighbor].dist_from_start) {
         vertex_info[neighbor] = {neighbor, distance, current.id};
         to_explore.push(vertex_info[neighbor]);

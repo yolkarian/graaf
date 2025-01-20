@@ -4,8 +4,8 @@
 #include <graaflib/graph.h>
 #include <graaflib/types.h>
 
-#include <concepts>
 #include <optional>
+#include <type_traits>
 
 namespace graaf::algorithm {
 
@@ -22,8 +22,8 @@ namespace graaf::algorithm {
  * no path exists.
  */
 template <typename V, typename E, graph_type T, typename HEURISTIC_T,
-          typename WEIGHT_T = decltype(get_weight(std::declval<E>()))>
-  requires std::is_invocable_r_v<WEIGHT_T, HEURISTIC_T&, vertex_id_t>
+          typename WEIGHT_T = decltype(get_weight(std::declval<E>())),
+           typename = std::enable_if_t<std::is_invocable_r_v<WEIGHT_T, HEURISTIC_T&, vertex_id_t>>>
 std::optional<graph_path<WEIGHT_T>> a_star_search(const graph<V, E, T>& graph,
                                                   vertex_id_t start_vertex,
                                                   vertex_id_t target_vertex,

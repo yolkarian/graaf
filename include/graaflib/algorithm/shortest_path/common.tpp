@@ -8,7 +8,7 @@ template <typename WEIGHT_T>
 std::optional<graph_path<WEIGHT_T>> reconstruct_path(
     vertex_id_t start_vertex, vertex_id_t end_vertex,
     std::unordered_map<vertex_id_t, path_vertex<WEIGHT_T>>& vertex_info) {
-  if (!vertex_info.contains(end_vertex)) {
+  if (vertex_info.find(end_vertex)==vertex_info.end()) {
     return std::nullopt;
   }
 

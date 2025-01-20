@@ -6,8 +6,8 @@ project(Graaf
   LANGUAGES C CXX
 )
 
-# This project uses C++ 20 features
-set(CMAKE_CXX_STANDARD 20)
+# This project uses C++ 17 features
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # The target name of the Library, what name you give to the Interface

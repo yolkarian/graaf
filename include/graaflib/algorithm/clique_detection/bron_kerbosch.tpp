@@ -21,7 +21,7 @@ vertex_set_t do_get_intersection(const vertex_set_t& lhs,
   vertex_set_t intersection{};
 
   for (const auto& vertex : lhs) {
-    if (rhs.contains(vertex)) {
+    if (rhs.find(vertex)!=rhs.end()) {
       intersection.insert(vertex);
     }
   }
@@ -59,9 +59,12 @@ void do_bron_kerbosch_maximal_clique(
   // union_set = candidate_vertices ⋃ excluded_vertices
   auto union_set = set_union(vertices, excluded_vertices);
 
-  const auto pivot_vertex = *std::ranges::max_element(
-      union_set, {},
-      [&graph](vertex_id_t id) { return graph.get_neighbors(id).size(); });
+    const auto pivot_vertex = *std::max_element(
+        union_set.begin(), union_set.end(),
+        [&graph](vertex_id_t id1, vertex_id_t id2) {
+            return graph.get_neighbors(id1).size() < graph.get_neighbors(id2).size();
+        }
+    );
 
   // vertices_to_process = candidate_vertices \ N(pivot_vertex)
   auto vertices_to_process =

@@ -70,7 +70,7 @@ int main() {
   const auto edge_writer{
       [&edges_on_shortest_path](const graaf::edge_id_t& edge_id,
                                 const auto& /*edge*/) -> std::string {
-        if (edges_on_shortest_path.contains(edge_id)) {
+        if (edges_on_shortest_path.find(edge_id)!=edges_on_shortest_path.end()) {
           return "label=\"\", color=red";
         }
         return "label=\"\", color=gray, style=dashed";

@@ -20,7 +20,7 @@ std::unordered_map<vertex_id_t, int> greedy_graph_coloring(const GRAPH& graph) {
     // Find the smallest available color for the current vertex
     int available_color{0};
     for (const auto neighbor_id : graph.get_neighbors(current_vertex_id)) {
-      if (coloring.contains(neighbor_id)) {
+      if (coloring.find(neighbor_id)!=coloring.end()) {
         const auto neighbor_color{coloring.at(neighbor_id)};
         if (neighbor_color >= available_color) {
           available_color = neighbor_color + 1;

@@ -116,8 +116,8 @@ void print_shortest_path(
                              const graaf::edge_id_t& edge_id,
                              const auto& edge) -> std::string {
     const auto style{"solid"};
-    if (edges_on_shortest_path.contains({edge_id.first, edge_id.second}) ||
-        edges_on_shortest_path.contains({edge_id.second, edge_id.first})) {
+    if ((edges_on_shortest_path.find({edge_id.first, edge_id.second})!=edges_on_shortest_path.end()) ||
+        (edges_on_shortest_path.find({edge_id.second, edge_id.first})!=edges_on_shortest_path.end())) {
       return fmt::format("label=\"{}\", style={}, color=red, fontcolor=black",
                          edge.kilometers, style);
     }
@@ -157,8 +157,8 @@ void print_visited_vertices(
                                        const auto& edge) -> std::string {
     const auto style{"solid"};
 
-    if (seen_edges.contains({edge_id.first, edge_id.second}) ||
-        seen_edges.contains({edge_id.second, edge_id.first}))
+    if ((seen_edges.find({edge_id.first, edge_id.second})!=seen_edges.end()) ||
+        (seen_edges.find({edge_id.second, edge_id.first})!=seen_edges.end()))
       return fmt::format("label=\"{}\", style={}, color=red, fontcolor=black",
                          edge.kilometers, style);
     return fmt::format("label=\"{}\", style={}, color=black, fontcolor=black",

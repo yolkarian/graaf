@@ -14,7 +14,7 @@ std::optional<graph_path<WEIGHT_T>> bfs_shortest_path(
   const auto callback{[&vertex_info](const edge_id_t& edge) {
     const auto [source, target]{edge};
 
-    if (!vertex_info.contains(target)) {
+    if (vertex_info.find(target)==vertex_info.end()) {
       vertex_info[target] = {target, vertex_info[source].dist_from_start + 1,
                              source};
     }

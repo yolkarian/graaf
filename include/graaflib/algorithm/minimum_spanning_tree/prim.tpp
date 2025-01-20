@@ -18,7 +18,7 @@ template <class GRAPH_T>
 
   for (const auto fringe_vertex : fringe_vertices) {
     for (const auto neighbor : graph.get_neighbors(fringe_vertex)) {
-      if (!fringe_vertices.contains(neighbor)) {
+      if (fringe_vertices.find(neighbor)==fringe_vertices.end()) {
         candidates.emplace_back(fringe_vertex, neighbor);
       }
     }
@@ -47,12 +47,12 @@ std::optional<std::vector<edge_id_t>> prim_minimum_spanning_tree(
       return std::nullopt;
     }
 
-    const edge_id_t mst_edge{*std::ranges::min_element(
-        candidates,
-        [graph](const edge_id_t& lhs, const edge_id_t& rhs) -> bool {
-          return get_weight(graph.get_edge(lhs)) <
-                 get_weight(graph.get_edge(rhs));
-        })};
+    const edge_id_t mst_edge = *std::min_element(
+        candidates.begin(), candidates.end(),
+        [&graph](const edge_id_t& lhs, const edge_id_t& rhs) -> bool {
+            return get_weight(graph.get_edge(lhs)) < get_weight(graph.get_edge(rhs));
+        }
+    );
 
     edges_in_mst.emplace_back(mst_edge);
     fringe_vertices.insert(mst_edge.second);

@@ -63,8 +63,7 @@ bool dfs_cycle_detection(const graph<V, E, graph_type::DIRECTED>& graph) {
   std::unordered_map<vertex_id_t, detail::vertex_color> colored_vertices{};
 
   for (const auto& vertex : graph.get_vertices()) {
-    using enum detail::vertex_color;
-    if (colored_vertices[vertex.first] == UNVISITED &&
+    if (colored_vertices[vertex.first] == detail::vertex_color::UNVISITED &&
         detail::do_dfs_directed(graph, colored_vertices, vertex.first)) {
       return true;
     }
@@ -84,7 +83,7 @@ bool dfs_cycle_detection(const graph<V, E, graph_type::UNDIRECTED>& graph) {
   std::unordered_map<vertex_id_t, vertex_id_t> parent_vertices{};
 
   for (const auto& vertex : graph.get_vertices()) {
-    if (!visited_vertices.contains(vertex.first) &&
+    if ((visited_vertices.find(vertex.first) == visited_vertices.end()) &&
         detail::do_dfs_undirected(graph, visited_vertices, parent_vertices,
                                   vertex.first,
                                   parent_vertices[vertex.first])) {

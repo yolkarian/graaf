@@ -28,16 +28,16 @@ std::unordered_map<vertex_id_t, int> welsh_powell_coloring(const GRAPH& graph) {
   for (const auto [_, current_vertex] : degree_vertex_pairs) {
     int color = 0;  // Start with color 0
 
-    // Check colors of adjacent vertices
-    for (const auto& neighbor : graph.get_neighbors(current_vertex)) {
-      // If neighbor is already colored with this color, increment the color
-      if (color_map.contains(neighbor) && color_map[neighbor] == color) {
-        color++;
-      }
-    }
+        // Check colors of adjacent vertices
+        for (const auto& neighbor : graph.get_neighbors(current_vertex)) {
+            // If neighbor is already colored with this color, increment the color
+            if ((color_map.find(neighbor)!=color_map.end()) && color_map[neighbor] == color) {
+                    color++;
+            }
+        }
 
-    // Assign the color to the current vertex
-    color_map[current_vertex] = color;
+        // Assign the color to the current vertex
+        color_map[current_vertex] = color;  
   }
 
   return color_map;

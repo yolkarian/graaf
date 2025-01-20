@@ -31,7 +31,7 @@ that connect these vertices. Graphs are used to model many real-world problems, 
 and computer networks. As such, graph algorithms are used in many applications, including route planning, network
 analysis, and data mining.
 
-Graaf: A Lightweight, Header-Only C++20 Graph Library
+Graaf: A Lightweight, Header-Only C++ 17 Graph Library 
 
 **Key Features**:
 
@@ -50,7 +50,7 @@ installation methods.
 
 ## Header-Only Library
 
-The Graaf libary can be included as a header-only library. All it requires is a compiler with **C++ 20 support**.
+The Graaf libary can be included as a header-only library. All it requires is a compiler with **C++ 17 support**. [The Original library](https://github.com/bobluppes/graaf) requires **C++ 20 support**, this fork is compatible with **C++ 17**.
 
 Download the `header-only` library from our [release page](https://github.com/bobluppes/graaf/releases) and add
 the `include/graaflib` directory to your include path. You can now use Graaf in your source files:
